@@ -13,6 +13,12 @@
             <div id='calculator-numbers'></div>
         </div>
         <script>
+            let status = {
+                current : 'placeholder',
+                previous : 0,
+                runningTally : 0,
+                operation : ''
+            }
             for (i = 0; i <= 9; i++) {
                 let calculatorNumbers = document.querySelector('#calculator-numbers');
                 let numberButton = document.createElement('button');
@@ -20,6 +26,7 @@
                 numberButton.textContent = i;
                 calculatorNumbers.appendChild(numberButton);
                 numberButton.style.gridArea = 'button' + i;
+                numberButton.addEventListener('click', () => numberInput(numberButton.textContent));
             }
             for (j = 0; j < 6; j++) {
                 let calculatorOperations = document.querySelector('#calculator-operations');
@@ -61,7 +68,18 @@
             function operate(num1, num2, operation) {
                 operation(num1, num2);
             }
-            operate(10, 5, multiply);
+            function numberInput (number) {
+                let display = document.querySelector('#calculator-input');
+                if (status.current == 'placeholder') {
+                    status.current = number;
+                    display.textContent = status.current;
+                    status.runningTally = status.current;
+                } else {
+                    status.current = number;
+                    display.textContent = ('' + status.runningTally + status.current);
+                    status.runningTally = display.textContent;
+                }
+            }
         </script>
     </body>
 </html>
