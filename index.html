@@ -2,8 +2,66 @@
 <html>
     <head>
         <title>Calculator</title>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
     </head>
     <body>
-        
+        <div id='display'>
+            <h1 id='calculator-input'>0</h1>
+        </div>
+        <div id='calculator-buttons'>
+            <div id='calculator-operations'></div>
+            <div id='calculator-numbers'></div>
+        </div>
+        <script>
+            for (i = 0; i <= 9; i++) {
+                let calculatorNumbers = document.querySelector('#calculator-numbers');
+                let numberButton = document.createElement('button');
+                numberButton.setAttribute('id', 'button' + i);
+                numberButton.textContent = i;
+                calculatorNumbers.appendChild(numberButton);
+                numberButton.style.gridArea = 'button' + i;
+            }
+            for (j = 0; j < 6; j++) {
+                let calculatorOperations = document.querySelector('#calculator-operations');
+                let operationButton = document.createElement('button');
+                if (j == 0) {
+                    operationButton.textContent = '+';
+                    operationButton.setAttribute('id', 'add');
+                } else if (j == 1) {
+                    operationButton.textContent = '-';
+                    operationButton.setAttribute('id', 'subtract');
+                } else if (j == 2) {
+                    operationButton.textContent = 'X';
+                    operationButton.setAttribute('id', 'multiply');
+                } else if (j == 3) {
+                    operationButton.textContent = '/';
+                    operationButton.setAttribute('id', 'divide');
+                } else if (j == 4) {
+                    operationButton.textContent = '=';
+                    operationButton.setAttribute('id', 'equals');
+                } else {
+                    operationButton.textContent = 'Clear';
+                    operationButton.setAttribute('id', 'clear');
+                }
+                calculatorOperations.appendChild(operationButton);
+                operationButton.style.gridArea = 'operation' + j;
+            }
+            function add(num1, num2) {
+                console.log(num1 + num2);
+            }
+            function subtract(num1, num2) {
+                console.log(num1 - num2);
+            }
+            function multiply(num1, num2) {
+                console.log(num1 * num2);
+            }
+            function divide(num1, num2) {
+                console.log(num1/num2);
+            }
+            function operate(num1, num2, operation) {
+                operation(num1, num2);
+            }
+            operate(10, 5, multiply);
+        </script>
     </body>
 </html>
