@@ -21,6 +21,7 @@
                 secondNumberOfOperation : 0,
                 operation : 'placeholder',
                 result : 0,
+                numberOfRuns : 0
             }
             status.displayObject.textContent = 0;
             for (i = 0; i <= 9; i++) {
@@ -84,7 +85,10 @@
                 prepareNextRound();
             }
             function equals() {
-                status.secondNumberOfOperation = status.runningTally;
+                status.numberOfRuns++;
+                if (status.numberOfRuns == 1) {
+                    status.secondNumberOfOperation = status.runningTally;
+                }
                 let operationToRun = status.operation;
                 window[operationToRun]();
             }
