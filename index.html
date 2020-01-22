@@ -57,6 +57,7 @@
                 } else {
                     operationButton.textContent = 'Clear';
                     operationButton.setAttribute('id', 'clear');
+                    operationButton.addEventListener('click', () => clear());
                 }
                 calculatorOperations.appendChild(operationButton);
                 operationButton.style.gridArea = 'operation' + j;
@@ -77,7 +78,11 @@
                 prepareNextRound();
             }
             function divide() {
-                status.displayObject.textContent = status.firstNumberOfOperation / status.secondNumberOfOperation;
+                if (status.firstNumberOfOperation == 0 || status.secondNumberOfOperation == 0) {
+                    status.displayObject.textContent = 'You sneaky bastard...';
+                } else {
+                    status.displayObject.textContent = status.firstNumberOfOperation / status.secondNumberOfOperation;
+                }
                 prepareNextRound();
             }
             function equals() {
@@ -98,6 +103,21 @@
                     status.loopAlert = 'active';
                 }
             }
+            function numberInput (number) {
+                if (number != 0 || status.current != 'placeholder') {
+                    if (status.current == 'placeholder') {
+                        status.current = number;
+                        status.displayObject.textContent = status.current;
+                        status.runningTally = status.current;
+                    } else {
+                        status.current = number;
+                        status.displayObject.textContent = ('' + status.runningTally + status.current);
+                        status.runningTally = status.displayObject.textContent;
+                    }
+                } else if (number == 0 && status.current == 'placeholder') {
+                    //Do nothing; user is trying to start a bunber with zero.
+                }
+            }
             //Logic Functions
             function prepareNextRound() {
                 status.result = status.displayObject.textContent;
@@ -109,18 +129,17 @@
                 status.runningTally = 0;
                 status.loopAlert = '';
             }
-            function numberInput (number) {
-                if (number != 0) {
-                    if (status.current == 'placeholder') {
-                        status.current = number;
-                        status.displayObject.textContent = status.current;
-                        status.runningTally = status.current;
-                    } else {
-                        status.current = number;
-                        status.displayObject.textContent = ('' + status.runningTally + status.current);
-                        status.runningTally = status.displayObject.textContent;
-                    }
-                }
+            function clear() {
+                status.displayObject = document.querySelector('#calculator-input');
+                status.current = 'placeholder';
+                status.runningTally = 0;
+                status.firstNumberOfOperation = 0;
+                status.secondNumberOfOperation = 0;
+                status.operation = 'placeholder';
+                status.result = 0;
+                status.numberOfRuns = 0;
+                status.loopAlert = '';
+                status.displayObject.textContent = 0;
             }
         </script>
     </body>
