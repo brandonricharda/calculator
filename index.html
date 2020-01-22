@@ -23,18 +23,31 @@
                 operation : 'placeholder',
                 result : 0,
                 numberOfRuns : 0,
-                loopAlert : ''
+                loopAlert : '',
+                decimalAlert : ''
             }
             status.displayObject.textContent = 0;
-            for (i = 0; i <= 9; i++) {
-                let calculatorNumbers = document.querySelector('#calculator-numbers');
-                let numberButton = document.createElement('button');
-                numberButton.setAttribute('id', 'button' + i);
-                numberButton.textContent = i;
-                calculatorNumbers.appendChild(numberButton);
-                numberButton.style.gridArea = 'button' + i;
-                numberButton.addEventListener('click', () => numberInput(numberButton.textContent));
+            for (i = 0; i <= 10; i++) {
+                if (i <= 9) {
+                    let calculatorNumbers = document.querySelector('#calculator-numbers');
+                    let numberButton = document.createElement('button');
+                    numberButton.setAttribute('id', 'button' + i);
+                    numberButton.textContent = i;
+                    calculatorNumbers.appendChild(numberButton);
+                    numberButton.style.gridArea = 'button' + i;
+                    numberButton.addEventListener('click', () => numberInput(numberButton.textContent));
+                } else {
+                    let calculatorNumbers = document.querySelector('#calculator-numbers');
+                    let decimalButton = document.createElement('button');
+                    decimalButton.setAttribute('id', 'buttonDecimal');
+                    decimalButton.textContent = ' \267 ';
+                    decimalButton.style.fontSize = '60px';
+                    calculatorNumbers.appendChild(decimalButton);
+                    decimalButton.style.gridArea = 'buttonDecimal';
+                    decimalButton.addEventListener('click', () => numberInput('.'));
+                }
             }
+            console.log('Does it make it to here?');
             for (j = 0; j < 6; j++) {
                 let calculatorOperations = document.querySelector('#calculator-operations');
                 let operationButton = document.createElement('button');
@@ -105,11 +118,16 @@
             }
             function numberInput (number) {
                 if (number != 0 || status.current != 'placeholder') {
-                    if (status.current == 'placeholder') {
+                    if (status.current == 'placeholder' && number != '.') {
                         status.current = number;
                         status.displayObject.textContent = status.current;
                         status.runningTally = status.current;
-                    } else {
+                    } else if (number == '.' && status.decimalAlert == '') {
+                        status.decimalAlert = 'active';
+                        status.current = number;
+                        status.displayObject.textContent = ('' + status.runningTally + status.current);
+                        status.runningTally = status.displayObject.textContent;                
+                    } else if (number != '.') {
                         status.current = number;
                         status.displayObject.textContent = ('' + status.runningTally + status.current);
                         status.runningTally = status.displayObject.textContent;
@@ -128,6 +146,7 @@
                 status.current = 'placeholder';
                 status.runningTally = 0;
                 status.loopAlert = '';
+                status.decimalAlert = '';
             }
             function clear() {
                 status.displayObject = document.querySelector('#calculator-input');
@@ -140,6 +159,7 @@
                 status.numberOfRuns = 0;
                 status.loopAlert = '';
                 status.displayObject.textContent = 0;
+                status.decimalAlert = '';
             }
         </script>
     </body>

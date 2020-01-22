@@ -21,6 +21,7 @@
 }
 
 #calculator-numbers {
+    padding-top: 20px;
     grid-area: digit;
     width: 100%;
     height: 100%;
