@@ -161,3 +161,16 @@ function backspace() {
     status.displayObject.textContent = status.numToBackspace.slice(0, -1);
     status.runningTally = status.displayObject.textContent;
 }
+window.onkeydown = function(event) {
+    console.log(event);
+    if (event.key == 'Backspace') {
+        backspace();
+    } else if (event.key < 10) {
+        numberInput(event.key);
+    } else if (event.key == 'Enter') {
+        equals();
+    } else if (event.key == 'x') {
+        this.operationSelector('multiply');
+    }
+    //numberInput(event.key);
+}
