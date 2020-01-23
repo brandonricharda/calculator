@@ -1,4 +1,4 @@
-//Initial Preset Functions (Incl. Button Creation)
+//Initial Presets
 let status = {
     displayObject : document.querySelector('#calculator-input'),
     current : 'placeholder',
@@ -9,10 +9,12 @@ let status = {
     result : 0,
     numberOfRuns : 0,
     loopAlert : '',
-    decimalAlert : ''
+    decimalAlert : '',
+    numToBackspace : '',
 }
+//Creates Number Buttons
 status.displayObject.textContent = 0;
-for (i = 0; i <= 10; i++) {
+for (i = 0; i <= 11; i++) {
     if (i <= 9) {
         let calculatorNumbers = document.querySelector('#calculator-numbers');
         let numberButton = document.createElement('button');
@@ -21,7 +23,7 @@ for (i = 0; i <= 10; i++) {
         calculatorNumbers.appendChild(numberButton);
         numberButton.style.gridArea = 'button' + i;
         numberButton.addEventListener('click', () => numberInput(numberButton.textContent));
-    } else {
+    } else if (i == 10) {
         let calculatorNumbers = document.querySelector('#calculator-numbers');
         let decimalButton = document.createElement('button');
         decimalButton.setAttribute('id', 'buttonDecimal');
@@ -30,8 +32,17 @@ for (i = 0; i <= 10; i++) {
         calculatorNumbers.appendChild(decimalButton);
         decimalButton.style.gridArea = 'buttonDecimal';
         decimalButton.addEventListener('click', () => numberInput('.'));
+    } else if (i == 11) {
+        let calculatorNumbers = document.querySelector('#calculator-numbers');
+        let backspaceButton = document.createElement('button');
+        backspaceButton.setAttribute('id', 'buttonDecimal');
+        backspaceButton.textContent = 'DEL';
+        calculatorNumbers.appendChild(backspaceButton);
+        backspaceButton.style.gridArea = 'backspaceButton';
+        backspaceButton.addEventListener('click', () => backspace());
     }
 }
+//Creates Function Buttons
 for (j = 0; j < 6; j++) {
     let calculatorOperations = document.querySelector('#calculator-operations');
     let operationButton = document.createElement('button');
@@ -65,7 +76,7 @@ function add() {
     status.displayObject.textContent = parseInt(status.firstNumberOfOperation) + parseInt(status.secondNumberOfOperation);
     prepareNextRound();
 }
-function subtract(num1, num2) {
+function subtract() {
     status.displayObject.textContent = status.firstNumberOfOperation - status.secondNumberOfOperation;
     prepareNextRound();
 }
@@ -111,14 +122,14 @@ function numberInput (number) {
             status.current = number;
             status.displayObject.textContent = ('' + status.runningTally + status.current);
             status.runningTally = status.displayObject.textContent;                
-        } else if (number != '.') {
+        } else if (number != '.' && number != 'backspace') {
             status.current = number;
             status.displayObject.textContent = ('' + status.runningTally + status.current);
             status.runningTally = status.displayObject.textContent;
         }
     } else if (number == 0 && status.current == 'placeholder') {
-        //Do nothing; user is trying to start a bunber with zero.
-    }
+        //Do nothing; user is trying to start a number with zero.
+    } 
 }
 //Logic Functions
 function prepareNextRound() {
@@ -144,4 +155,9 @@ function clear() {
     status.loopAlert = '';
     status.displayObject.textContent = 0;
     status.decimalAlert = '';
+}
+function backspace() {
+    status.numToBackspace = status.displayObject.textContent;
+    status.displayObject.textContent = status.numToBackspace.slice(0, -1);
+    status.runningTally = status.displayObject.textContent;
 }
