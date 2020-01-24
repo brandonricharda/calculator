@@ -67,6 +67,7 @@ for (j = 0; j < 6; j++) {
     }
     calculatorOperations.appendChild(operationButton);
     operationButton.style.gridArea = 'operation' + j;
+    operationButton.setAttribute('id', 'operationButton');
     operationButton.addEventListener('click', () => operationSelector(operationButton.id));
 }
 //Arithmetic Functions
@@ -150,6 +151,8 @@ document.onkeydown = function(event) {
         backspace();
     } else if (event.key < 10) {
         numberInput(event.key);
+        let buttonToUpdate = document.querySelector('#' + 'button' + event.key);
+        buttonToUpdate.style.background = 'lightgreen';
     } else if (event.key == 'Enter') {
         equals();
         operationSelector('equals');
@@ -165,6 +168,12 @@ document.onkeydown = function(event) {
         operationSelector('subtract');
     } else if (event.key == '+') {
         operationSelector('add');
+    }
+}
+document.onkeyup = function(event) {
+    if (event.key < 10) {
+        let buttonToReset = document.querySelector('#' + 'button' + event.key);
+        buttonToReset.style.background = 'lightblue';
     }
 }
 //Logic Functions

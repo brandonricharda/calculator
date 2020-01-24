@@ -1,3 +1,17 @@
+#branding > h1 {
+    text-align: center;
+    font-size: 50px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-bottom: 10px;
+}
+
+#branding > h2 {
+    font-size: 15px;
+    font-weight: lighter;
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
 #display {
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
@@ -8,9 +22,11 @@
 
 #display > h1 {
     grid-area: display;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 #calculator-buttons {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: 1fr 5fr;
@@ -35,10 +51,30 @@
                         ". buttonDecimal button9 backspaceButton .";
 }
 
-#calculator-numbers > button, #calculator-operations > button {
+#calculator-numbers > button {
+    border-radius: 5px;
+    background-color: lightblue;
     height: 100px;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 15px;
+    font-size: 20px;
+}
+
+#calculator-numbers > button:hover {
+    border-color: black;
+    font-size: 25px;
+}
+
+#calculator-operations > button:hover {
+    border-color: black;
+    font-size: 25px;
+}
+
+#calculator-operations > button {
+    border-radius: 5px;
+    background-color: lightgrey;
+    height: 100px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
 }
 
 #calculator-operations {
