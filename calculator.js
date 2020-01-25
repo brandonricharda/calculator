@@ -1,6 +1,9 @@
 //Initial Presets
 let status = {
     mainDisplay : document.querySelector('#calculator-input'),
+    operationPreviewContainer : document.querySelector('#operation-preview-container'),
+    operationPreview : document.querySelector('#operation-preview'),
+    buttonToIcon : '',
     current : 'placeholder',
     runningTally : 0,
     firstNumberOfOperation : 0,
@@ -12,7 +15,7 @@ let status = {
     decimalAlert : '',
     numToBackspace : '',
 }
-var { mainDisplay, current, runningTally, firstNumberOfOperation, secondNumberOfOperation, operation, result, numberOfRuns, loopAlert, decimalAlert, numToBackspace } = status;
+var { mainDisplay, current, runningTally, firstNumberOfOperation, secondNumberOfOperation, operation, result, numberOfRuns, loopAlert, decimalAlert, numToBackspace, operationPreviewContainer, operationPreview } = status;
 //Creates Number Buttons
 mainDisplay.textContent = 0;
 for (i = 0; i <= 11; i++) {
@@ -102,9 +105,12 @@ function buttonEquals() {
 //Button Click Functions
 function operationSelector(buttonPressed) {
     firstNumberOfOperation = runningTally;
+    buttonToIcon = document.querySelector('#' + buttonPressed);
     if (buttonPressed != 'buttonEquals') {
         operation = buttonPressed;
         afterOperationButtonClick();
+        operationPreviewContainer.appendChild(operationPreview);
+        operationPreview.textContent = ('' + firstNumberOfOperation + ' ' + buttonToIcon.textContent);
     } else {
         loopAlert = 'active';
     }
@@ -140,6 +146,7 @@ function buttonClear() {
     loopAlert = '';
     mainDisplay.textContent = 0;
     decimalAlert = '';
+    operationPreview.textContent = '';
 }
 function buttonDelete() {
     numToBackspace = mainDisplay.textContent;
@@ -210,6 +217,11 @@ function prepareNextRound() {
     result = mainDisplay.textContent;
     current = 'placeholder';
     runningTally = result;
+    if (loopAlert != 'active') {
+        operationPreview.textContent += ('' + ' ' + secondNumberOfOperation + ' ' + '=');
+    } else {
+        operationPreview.textContent = '';
+    }
 }
 function afterOperationButtonClick() {
     current = 'placeholder';
