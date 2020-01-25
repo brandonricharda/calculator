@@ -171,42 +171,45 @@ function buttonDelete() {
 document.onkeydown = function(event) {
     if (event.key == 'Backspace') {
         buttonDelete();
-        numberLightPress('#buttonDelete');
-        setTimeout(() => {undoNumberLightPress('#buttonDelete')}, 100);
+        numberLightOnOff('#buttonDelete');
     } else if (event.key < 10) {
         numberInput(event.key);
-        numberLightPress('#' + 'button' + event.key);
-        setTimeout(() => {undoNumberLightPress('#' + 'button' + event.key)}, 100);
+        numberLightOnOff('#' + 'button' + event.key);
     } else if (event.key == 'Enter') {
         buttonEquals();
         operationSelector('buttonEquals');
-        operationLightPress('#buttonEquals');
-        setTimeout(() => {undoOperationLightPress('#buttonEquals')}, 100);
+        operationLightOnOff('#buttonEquals');
     } else if (event.key == 'x') {
         operationSelector('buttonMultiply');
-        operationLightPress('#buttonMultiply');
-        setTimeout(() => {undoOperationLightPress('#buttonMultiply')}, 100);
+        operationLightOnOff('#buttonMultiply')
     } else if (event.key == '/') {
         operationSelector('buttonDivide');
-        operationLightPress('#buttonDivide');
-        setTimeout(() => {undoOperationLightPress('#buttonDivide')}, 100);
+        operationLightOnOff('#buttonDivide');
     } else if (event.key == '.') {
         numberInput('.');
-        numberLightPress('#buttonDecimal');
-        setTimeout(() => {undoNumberLightPress('#buttonDecimal')}, 100);
+        numberLightOnOff('#buttonDecimal');
     } else if (event.key == 'Escape') {
         buttonClear();
-        operationLightPress('#buttonClear');
-        setTimeout(() => {undoOperationLightPress('#buttonClear')}, 100);
+        operationLightOnOff('#buttonClear');
     } else if (event.key == '-') {
         operationSelector('buttonSubtract');
-        operationLightPress('#buttonSubtract');
-        setTimeout(() => {undoOperationLightPress('#buttonSubtract')}, 100);
+        operationLightOnOff('#buttonSubtract');
     } else if (event.key == '+') {
         operationSelector('buttonAdd');
-        operationLightPress('#buttonAdd');
-        setTimeout(() => {undoOperationLightPress('#buttonAdd')}, 100);
+        operationLightOnOff('#buttonAdd');
     }
+}
+function numberLightOnOff(keyPressed) {
+    numberLightPress(keyPressed);
+    setTimeout(function() {
+        undoNumberLightPress(keyPressed)
+    }, 100);
+}
+function operationLightOnOff(keyPressed) {
+    operationLightPress(keyPressed);
+    setTimeout(function() {
+        undoOperationLightPress(keyPressed);
+    }, 100);
 }
 function numberLightPress(keyPressed) {
     let buttonToUpdate = document.querySelector(keyPressed);
