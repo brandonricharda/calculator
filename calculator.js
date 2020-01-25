@@ -22,7 +22,13 @@ for (i = 0; i <= 11; i++) {
         numberButton.textContent = i;
         calculatorNumbers.appendChild(numberButton);
         numberButton.style.gridArea = 'button' + i;
-        numberButton.addEventListener('click', () => numberInput(numberButton.textContent));
+        numberButton.addEventListener('click', function() {
+            numberInput(numberButton.textContent);
+            numberLightPress('#' + 'button' + numberButton.textContent);
+            setTimeout(function() {
+                undoNumberLightPress('#' + 'button' + numberButton.textContent);
+            }, 100);
+        });
     } else if (i == 10) {
         let decimalButton = document.createElement('button');
         decimalButton.setAttribute('id', 'buttonDecimal');
@@ -30,14 +36,25 @@ for (i = 0; i <= 11; i++) {
         decimalButton.style.fontSize = '60px';
         calculatorNumbers.appendChild(decimalButton);
         decimalButton.style.gridArea = 'buttonDecimal';
-        decimalButton.addEventListener('click', () => numberInput('.'));
+        decimalButton.addEventListener('click', function() {
+            numberInput('.');
+            numberLightPress('#buttonDecimal');
+            setTimeout(function() {
+                undoNumberLightPress('#buttonDecimal');
+            }, 100);
+        });
     } else if (i == 11) {
         let backspaceButton = document.createElement('button');
-        backspaceButton.setAttribute('id', 'buttonDecimal');
+        backspaceButton.setAttribute('id', 'buttonDelete');
         backspaceButton.textContent = 'DEL';
         calculatorNumbers.appendChild(backspaceButton);
         backspaceButton.style.gridArea = 'backspaceButton';
-        backspaceButton.addEventListener('click', () => backspace());
+        backspaceButton.addEventListener('click', function() {
+            numberLightPress('#buttonDelete');
+            setTimeout(function() {
+                undoNumberLightPress('#buttonDelete');
+            }, 100);
+        });
     }
 }
 //Creates Operator Buttons
@@ -46,44 +63,49 @@ for (j = 0; j < 6; j++) {
     let operationButton = document.createElement('button');
     if (j == 0) {
         operationButton.textContent = '+';
-        operationButton.setAttribute('id', 'add');
+        operationButton.setAttribute('id', 'buttonAdd');
     } else if (j == 1) {
         operationButton.textContent = '-';
-        operationButton.setAttribute('id', 'subtract');
+        operationButton.setAttribute('id', 'buttonSubtract');
     } else if (j == 2) {
         operationButton.textContent = 'X';
-        operationButton.setAttribute('id', 'multiply');
+        operationButton.setAttribute('id', 'buttonMultiply');
     } else if (j == 3) {
         operationButton.textContent = '/';
-        operationButton.setAttribute('id', 'divide');
+        operationButton.setAttribute('id', 'buttonDivide');
     } else if (j == 4) {
         operationButton.textContent = '=';
-        operationButton.setAttribute('id', 'equals');
-        operationButton.addEventListener('click', () => equals());
+        operationButton.setAttribute('id', 'buttonEquals');
+        operationButton.addEventListener('click', () => buttonEquals());
     } else {
         operationButton.textContent = 'Clear';
-        operationButton.setAttribute('id', 'clear');
-        operationButton.addEventListener('click', () => clear());
+        operationButton.setAttribute('id', 'buttonClear');
+        operationButton.addEventListener('click', () => buttonClear());
     }
     calculatorOperations.appendChild(operationButton);
     operationButton.style.gridArea = 'operation' + j;
-    operationButton.setAttribute('id', 'operationButton');
-    operationButton.addEventListener('click', () => operationSelector(operationButton.id));
+    operationButton.addEventListener('click', function() {
+        operationSelector(operationButton.id);
+        operationLightPress('#' + operationButton.id);
+        setTimeout(function() {
+            undoOperationLightPress('#' + operationButton.id);
+        }, 100);
+    });
 }
 //Arithmetic Functions
-function add() {
+function buttonAdd() {
     status.mainDisplay.textContent = parseInt(status.firstNumberOfOperation) + parseInt(status.secondNumberOfOperation);
     prepareNextRound();
 }
-function subtract() {
+function buttonSubtract() {
     status.mainDisplay.textContent = status.firstNumberOfOperation - status.secondNumberOfOperation;
     prepareNextRound();
 }
-function multiply() {
+function buttonMultiply() {
     status.mainDisplay.textContent = status.firstNumberOfOperation * status.secondNumberOfOperation;
     prepareNextRound();
 }
-function divide() {
+function buttonDivide() {
     if (status.firstNumberOfOperation == 0 || status.secondNumberOfOperation == 0) {
         status.mainDisplay.textContent = 'Error';
     } else {
@@ -91,7 +113,7 @@ function divide() {
     }
     prepareNextRound();
 }
-function equals() {
+function buttonEquals() {
     status.numberOfRuns++;
     if (status.numberOfRuns == 1 || status.loopAlert != 'active') {
         status.secondNumberOfOperation = status.runningTally;
@@ -102,7 +124,7 @@ function equals() {
 //Button Click Functions
 function operationSelector(buttonPressed) {
     status.firstNumberOfOperation = status.runningTally;
-    if (buttonPressed != 'equals') {
+    if (buttonPressed != 'buttonEquals') {
         status.operation = buttonPressed;
         afterOperationButtonClick();
     } else {
@@ -120,7 +142,7 @@ function numberInput (number) {
             status.current = number;
             status.mainDisplay.textContent = ('' + status.runningTally + status.current);
             status.runningTally = status.mainDisplay.textContent;                
-        } else if (number != '.' && number != 'backspace') {
+        } else if (number != '.') {
             status.current = number;
             status.mainDisplay.textContent = ('' + status.runningTally + status.current);
             status.runningTally = status.mainDisplay.textContent;
@@ -129,7 +151,7 @@ function numberInput (number) {
         //Do nothing; user is trying to start a number with zero.
     } 
 }
-function clear() {
+function buttonClear() {
     status.current = 'placeholder';
     status.runningTally = 0;
     status.firstNumberOfOperation = 0;
@@ -141,40 +163,66 @@ function clear() {
     status.mainDisplay.textContent = 0;
     status.decimalAlert = '';
 }
-function backspace() {
+function buttonDelete() {
     status.numToBackspace = status.mainDisplay.textContent;
     status.mainDisplay.textContent = status.numToBackspace.slice(0, -1);
     status.runningTally = status.mainDisplay.textContent;
 }
 document.onkeydown = function(event) {
     if (event.key == 'Backspace') {
-        backspace();
+        buttonDelete();
+        numberLightPress('#buttonDelete');
+        setTimeout(() => {undoNumberLightPress('#buttonDelete')}, 100);
     } else if (event.key < 10) {
         numberInput(event.key);
-        let buttonToUpdate = document.querySelector('#' + 'button' + event.key);
-        buttonToUpdate.style.background = 'lightgreen';
+        numberLightPress('#' + 'button' + event.key);
+        setTimeout(() => {undoNumberLightPress('#' + 'button' + event.key)}, 100);
     } else if (event.key == 'Enter') {
-        equals();
-        operationSelector('equals');
+        buttonEquals();
+        operationSelector('buttonEquals');
+        operationLightPress('#buttonEquals');
+        setTimeout(() => {undoOperationLightPress('#buttonEquals')}, 100);
     } else if (event.key == 'x') {
-        operationSelector('multiply');
+        operationSelector('buttonMultiply');
+        operationLightPress('#buttonMultiply');
+        setTimeout(() => {undoOperationLightPress('#buttonMultiply')}, 100);
     } else if (event.key == '/') {
-        operationSelector('divide');
+        operationSelector('buttonDivide');
+        operationLightPress('#buttonDivide');
+        setTimeout(() => {undoOperationLightPress('#buttonDivide')}, 100);
     } else if (event.key == '.') {
         numberInput('.');
+        numberLightPress('#buttonDecimal');
+        setTimeout(() => {undoNumberLightPress('#buttonDecimal')}, 100);
     } else if (event.key == 'Escape') {
-        clear();
+        buttonClear();
+        operationLightPress('#buttonClear');
+        setTimeout(() => {undoOperationLightPress('#buttonClear')}, 100);
     } else if (event.key == '-') {
-        operationSelector('subtract');
+        operationSelector('buttonSubtract');
+        operationLightPress('#buttonSubtract');
+        setTimeout(() => {undoOperationLightPress('#buttonSubtract')}, 100);
     } else if (event.key == '+') {
-        operationSelector('add');
+        operationSelector('buttonAdd');
+        operationLightPress('#buttonAdd');
+        setTimeout(() => {undoOperationLightPress('#buttonAdd')}, 100);
     }
 }
-document.onkeyup = function(event) {
-    if (event.key < 10) {
-        let buttonToReset = document.querySelector('#' + 'button' + event.key);
-        buttonToReset.style.background = 'lightblue';
-    }
+function numberLightPress(keyPressed) {
+    let buttonToUpdate = document.querySelector(keyPressed);
+    buttonToUpdate.style.background = 'lightgreen';
+}
+function operationLightPress(keyPressed) {
+    let buttonToUpdate = document.querySelector(keyPressed);
+    buttonToUpdate.style.background = 'lightgreen';
+}
+function undoNumberLightPress(keyPressed) {
+    let buttonToUpdate = document.querySelector(keyPressed);
+    buttonToUpdate.style.background = 'lightblue';
+}
+function undoOperationLightPress(keyPressed) {
+    let buttonToUpdate = document.querySelector(keyPressed);
+    buttonToUpdate.style.background = 'lightgrey';
 }
 //Logic Functions
 function prepareNextRound() {

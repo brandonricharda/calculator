@@ -86,3 +86,6 @@
     grid-template-columns: repeat(10, 1fr);
     grid-template-areas: ". . operation0 operation1 operation2 operation3 operation4 operation5 . . ";
 }
+button:focus {
+    outline: none;
+}
