@@ -213,7 +213,6 @@ function prepareNextRound() {
 }
 function afterOperationButtonClick() {
     current = 'placeholder';
-    runningTally = 0;
     loopAlert = '';
     decimalAlert = '';
 }
