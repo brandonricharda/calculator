@@ -12,8 +12,9 @@ let status = {
     decimalAlert : '',
     numToBackspace : '',
 }
+var { mainDisplay, current, runningTally, firstNumberOfOperation, secondNumberOfOperation, operation, result, numberOfRuns, loopAlert, decimalAlert, numToBackspace } = status;
 //Creates Number Buttons
-status.mainDisplay.textContent = 0;
+mainDisplay.textContent = 0;
 for (i = 0; i <= 11; i++) {
     let calculatorNumbers = document.querySelector('#calculator-numbers');
     if (i <= 9) {
@@ -22,13 +23,7 @@ for (i = 0; i <= 11; i++) {
         numberButton.textContent = i;
         calculatorNumbers.appendChild(numberButton);
         numberButton.style.gridArea = 'button' + i;
-        numberButton.addEventListener('click', function() {
-            numberInput(numberButton.textContent);
-            numberLightPress('#' + 'button' + numberButton.textContent);
-            setTimeout(function() {
-                undoNumberLightPress('#' + 'button' + numberButton.textContent);
-            }, 100);
-        });
+        numberButton.addEventListener('click', () => {numberInput(numberButton.textContent), numberLightOnOff('#' + 'button' + numberButton.textContent)});
     } else if (i == 10) {
         let decimalButton = document.createElement('button');
         decimalButton.setAttribute('id', 'buttonDecimal');
@@ -36,25 +31,14 @@ for (i = 0; i <= 11; i++) {
         decimalButton.style.fontSize = '60px';
         calculatorNumbers.appendChild(decimalButton);
         decimalButton.style.gridArea = 'buttonDecimal';
-        decimalButton.addEventListener('click', function() {
-            numberInput('.');
-            numberLightPress('#buttonDecimal');
-            setTimeout(function() {
-                undoNumberLightPress('#buttonDecimal');
-            }, 100);
-        });
+        decimalButton.addEventListener('click', () => {numberInput('.'), numberLightOnOff('#buttonDecimal')});
     } else if (i == 11) {
         let backspaceButton = document.createElement('button');
         backspaceButton.setAttribute('id', 'buttonDelete');
         backspaceButton.textContent = 'DEL';
         calculatorNumbers.appendChild(backspaceButton);
         backspaceButton.style.gridArea = 'backspaceButton';
-        backspaceButton.addEventListener('click', function() {
-            numberLightPress('#buttonDelete');
-            setTimeout(function() {
-                undoNumberLightPress('#buttonDelete');
-            }, 100);
-        });
+        backspaceButton.addEventListener('click', () => {numberLightOnOff('#buttonDelete'), buttonDelete()});
     }
 }
 //Creates Operator Buttons
@@ -84,89 +68,83 @@ for (j = 0; j < 6; j++) {
     }
     calculatorOperations.appendChild(operationButton);
     operationButton.style.gridArea = 'operation' + j;
-    operationButton.addEventListener('click', function() {
-        operationSelector(operationButton.id);
-        operationLightPress('#' + operationButton.id);
-        setTimeout(function() {
-            undoOperationLightPress('#' + operationButton.id);
-        }, 100);
-    });
+    operationButton.addEventListener('click', () => {operationSelector(operationButton.id), operationLightOnOff('#' + operationButton.id)});
 }
 //Arithmetic Functions
 function buttonAdd() {
-    status.mainDisplay.textContent = parseInt(status.firstNumberOfOperation) + parseInt(status.secondNumberOfOperation);
+    mainDisplay.textContent = parseInt(firstNumberOfOperation) + parseInt(secondNumberOfOperation);
     prepareNextRound();
 }
 function buttonSubtract() {
-    status.mainDisplay.textContent = status.firstNumberOfOperation - status.secondNumberOfOperation;
+    mainDisplay.textContent = firstNumberOfOperation - secondNumberOfOperation;
     prepareNextRound();
 }
 function buttonMultiply() {
-    status.mainDisplay.textContent = status.firstNumberOfOperation * status.secondNumberOfOperation;
+    mainDisplay.textContent = firstNumberOfOperation * secondNumberOfOperation;
     prepareNextRound();
 }
 function buttonDivide() {
-    if (status.firstNumberOfOperation == 0 || status.secondNumberOfOperation == 0) {
-        status.mainDisplay.textContent = 'Error';
+    if (firstNumberOfOperation == 0 || secondNumberOfOperation == 0) {
+        mainDisplay.textContent = 'Error';
     } else {
-        status.mainDisplay.textContent = status.firstNumberOfOperation / status.secondNumberOfOperation;
+        mainDisplay.textContent = firstNumberOfOperation / secondNumberOfOperation;
     }
     prepareNextRound();
 }
 function buttonEquals() {
-    status.numberOfRuns++;
-    if (status.numberOfRuns == 1 || status.loopAlert != 'active') {
-        status.secondNumberOfOperation = status.runningTally;
+    numberOfRuns++;
+    if (numberOfRuns == 1 || loopAlert != 'active') {
+        secondNumberOfOperation = runningTally;
     } 
-    let operationToRun = status.operation;
+    let operationToRun = operation;
     window[operationToRun]();
 }
 //Button Click Functions
 function operationSelector(buttonPressed) {
-    status.firstNumberOfOperation = status.runningTally;
+    firstNumberOfOperation = runningTally;
     if (buttonPressed != 'buttonEquals') {
-        status.operation = buttonPressed;
+        operation = buttonPressed;
         afterOperationButtonClick();
     } else {
-        status.loopAlert = 'active';
+        loopAlert = 'active';
     }
 }
 function numberInput (number) {
-    if (number != 0 || status.current != 'placeholder') {
-        if (status.current == 'placeholder' && number != '.') {
-            status.current = number;
-            status.mainDisplay.textContent = status.current;
-            status.runningTally = status.current;
-        } else if (number == '.' && status.decimalAlert == '') {
-            status.decimalAlert = 'active';
-            status.current = number;
-            status.mainDisplay.textContent = ('' + status.runningTally + status.current);
-            status.runningTally = status.mainDisplay.textContent;                
+    if (number != 0 || current != 'placeholder') {
+        if (current == 'placeholder' && number != '.') {
+            current = number;
+            mainDisplay.textContent = current;
+            runningTally = current;
+        } else if (number == '.' && decimalAlert == '') {
+            decimalAlert = 'active';
+            current = number;
+            mainDisplay.textContent = ('' + runningTally + current);
+            runningTally = mainDisplay.textContent;                
         } else if (number != '.') {
-            status.current = number;
-            status.mainDisplay.textContent = ('' + status.runningTally + status.current);
-            status.runningTally = status.mainDisplay.textContent;
+            current = number;
+            mainDisplay.textContent = ('' + runningTally + current);
+            runningTally = mainDisplay.textContent;
         }
-    } else if (number == 0 && status.current == 'placeholder') {
+    } else if (number == 0 && current == 'placeholder') {
         //Do nothing; user is trying to start a number with zero.
     } 
 }
 function buttonClear() {
-    status.current = 'placeholder';
-    status.runningTally = 0;
-    status.firstNumberOfOperation = 0;
-    status.secondNumberOfOperation = 0;
-    status.operation = 'placeholder';
-    status.result = 0;
-    status.numberOfRuns = 0;
-    status.loopAlert = '';
-    status.mainDisplay.textContent = 0;
-    status.decimalAlert = '';
+    current = 'placeholder';
+    runningTally = 0;
+    firstNumberOfOperation = 0;
+    secondNumberOfOperation = 0;
+    operation = 'placeholder';
+    result = 0;
+    numberOfRuns = 0;
+    loopAlert = '';
+    mainDisplay.textContent = 0;
+    decimalAlert = '';
 }
 function buttonDelete() {
-    status.numToBackspace = status.mainDisplay.textContent;
-    status.mainDisplay.textContent = status.numToBackspace.slice(0, -1);
-    status.runningTally = status.mainDisplay.textContent;
+    numToBackspace = mainDisplay.textContent;
+    mainDisplay.textContent = numToBackspace.slice(0, -1);
+    runningTally = mainDisplay.textContent;
 }
 document.onkeydown = function(event) {
     if (event.key == 'Backspace') {
@@ -229,13 +207,13 @@ function undoOperationLightPress(keyPressed) {
 }
 //Logic Functions
 function prepareNextRound() {
-    status.result = status.mainDisplay.textContent;
-    status.current = 'placeholder';
-    status.runningTally = status.result;
+    result = mainDisplay.textContent;
+    current = 'placeholder';
+    runningTally = result;
 }
 function afterOperationButtonClick() {
-    status.current = 'placeholder';
-    status.runningTally = 0;
-    status.loopAlert = '';
-    status.decimalAlert = '';
+    current = 'placeholder';
+    runningTally = 0;
+    loopAlert = '';
+    decimalAlert = '';
 }
