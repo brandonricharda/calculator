@@ -12,6 +12,15 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+#operation-preview {
+    margin: 1px;
+    font-size: 20px;
+    font-weight: lighter;
+    text-align: center;
+    color: grey;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
 #display {
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
