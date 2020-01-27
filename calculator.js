@@ -110,7 +110,9 @@ function operationSelector(buttonPressed) {
         operation = buttonPressed;
         afterOperationButtonClick();
         operationPreviewContainer.appendChild(operationPreview);
-        operationPreview.textContent = ('' + firstNumberOfOperation + ' ' + buttonToIcon.textContent);
+        if (buttonToIcon.textContent != 'Clear') {
+            operationPreview.textContent = ('' + firstNumberOfOperation + ' ' + buttonToIcon.textContent);
+        }
     } else {
         loopAlert = 'active';
     }
@@ -198,19 +200,19 @@ function operationLightOnOff(keyPressed) {
 }
 function numberLightPress(keyPressed) {
     let buttonToUpdate = document.querySelector(keyPressed);
-    buttonToUpdate.style.background = 'lightgreen';
+    buttonToUpdate.style.background = '#283845';
 }
 function operationLightPress(keyPressed) {
     let buttonToUpdate = document.querySelector(keyPressed);
-    buttonToUpdate.style.background = 'lightgreen';
+    buttonToUpdate.style.background = '#283845';
 }
 function undoNumberLightPress(keyPressed) {
     let buttonToUpdate = document.querySelector(keyPressed);
-    buttonToUpdate.style.background = 'lightblue';
+    buttonToUpdate.style.background = '#B7D1DA';
 }
 function undoOperationLightPress(keyPressed) {
     let buttonToUpdate = document.querySelector(keyPressed);
-    buttonToUpdate.style.background = 'lightgrey';
+    buttonToUpdate.style.background = '#95A3A4';
 }
 //Logic Functions
 function prepareNextRound() {

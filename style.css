@@ -1,3 +1,7 @@
+body {
+    background-color: #E2E8DD;
+}
+
 #branding > h1 {
     text-align: center;
     font-size: 50px;
@@ -62,7 +66,7 @@
 
 #calculator-numbers > button {
     border-radius: 5px;
-    background-color: lightblue;
+    background-color: #B7D1DA;
     height: 100px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
@@ -80,7 +84,7 @@
 
 #calculator-operations > button {
     border-radius: 5px;
-    background-color: lightgrey;
+    background-color: #95A3A4;
     height: 100px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
