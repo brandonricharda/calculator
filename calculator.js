@@ -75,7 +75,7 @@ for (j = 0; j < 6; j++) {
 }
 //Arithmetic Functions
 function buttonAdd() {
-    mainDisplay.textContent = parseInt(firstNumberOfOperation) + parseInt(secondNumberOfOperation);
+    mainDisplay.textContent = +firstNumberOfOperation + +secondNumberOfOperation;
     prepareNextRound();
 }
 function buttonSubtract() {
